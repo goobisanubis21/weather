@@ -33,3 +33,7 @@
 #five-day {
     margin-top: 20px;
 }
+
+.list-group-item {
+    cursor: pointer;
+}
