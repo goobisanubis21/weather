@@ -52,6 +52,8 @@ $(document).ready(function () {
                     display();
                 })
 
+                var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + response.name +"&appid=" + APIKey
+                
             })
         }
     });
