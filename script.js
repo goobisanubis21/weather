@@ -5,6 +5,7 @@ $(document).ready(function () {
     searchButton.on("click", function () {
 
         var searchText = $("#search-sidebar").val();
+        var city = $("#city")
         var temp = $("#temp");
         var humidity = $("#humidity");
         var wind = $("#wind");
@@ -16,6 +17,7 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
             console.log(response);
+            city.text(response.name + moment().format(' (L)') + response.weather[0].icon);
             temp.text(Math.round((response.main.temp - 273.15) * 1.80 + 32));
             humidity.text(response.main.humidity);
             wind.text(response.wind.speed);
