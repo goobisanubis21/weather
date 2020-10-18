@@ -1,7 +1,18 @@
+// when document is loaded, run the function
 $(document).ready(function () {
-
+    // getting the search button
     var searchButton = $("#search-sidebutton");
 
+    // showStorage()
+    // function showStorage() {
+    //     listItem = JSON.parse(localStorage.getItem("list"));
+    //     var listEl = $("<li>");
+    //     listEl.addClass("list-group-item");
+    //     listEl.text(listItem);
+    //     $("#city-list").prepend(listEl);
+    // }
+
+    // funtion to display the current weather
     function display() {
 
         var searchText = $("#search-sidebar").val();
@@ -17,7 +28,7 @@ $(document).ready(function () {
             alert("Please Enter a City");
             return;
         }
-
+        //ajax call to get the apis data
         $.ajax({
             url: queryURL,
             method: "GET",
@@ -30,6 +41,7 @@ $(document).ready(function () {
         }).then(function (response) {
 
             console.log("current forcast response: ", response);
+            // if statements to set the current weather image
             var currentImg = $("#currentImg")
 
             if (response.weather[0].main === "Clouds") {
@@ -43,19 +55,20 @@ $(document).ready(function () {
             } else {
                 currentImg.attr("src", "images/sun.png")
             }
-
+            //setting the data to the correct elements to be displayed to user
             city.text(response.name + moment().format(' (L)'));
             temp.text(Math.round((response.main.temp - 273.15) * 1.80 + 32));
             humidity.text(response.main.humidity);
             wind.text(response.wind.speed);
-            // uv.text(response.)
 
+            // function to add the search history
             function addLi() {
                 var listEl = $("<li>");
                 listEl.addClass("list-group-item");
                 listEl.text(response.name);
                 listEl.attr("id", response.name);
                 $("#city-list").prepend(listEl);
+                localStorage.setItem("list", JSON.stringify(listEl));
             } addLi();
 
             var lat = response.coord.lat;
@@ -152,9 +165,36 @@ $(document).ready(function () {
                     day5Img.attr("src", "images/sun.png")
                 }
 
+                queryURL3 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
+                $.ajax({
+                    url: queryURL3,
+                    method: "GET",
+
+                }).then(function (response) {
+
+                    var uv = $("#uv");
+                    uvValue = response.value;
+                    console.log(uvValue)
+                    if (uvValue < 5) {
+                        uv.text(uvValue);
+                        uv.removeClass("uvHigh");
+                        uv.removeClass("uvMed");
+                        uv.addClass("uvCold");
+                    } else if ((uvValue >= 5) && (uvValue < 8)) {
+                        uv.text(uvValue);
+                        uv.removeClass("uvCold");
+                        uv.removeClass("uvHigh");
+                        uv.addClass("uvMed");
+                    }
+                    else if (uvValue >= 8) {
+                        uv.text(uvValue);
+                        uv.removeClass("uvCold");
+                        uv.removeClass("uvMed");
+                        uv.addClass("uvHigh");
+                    }
+                })
+
             })
-
-
         })
     }
 
@@ -183,14 +223,42 @@ $(document).ready(function () {
             var day5Img = $("#day5Img");
 
             console.log("response: ", response);
-            city.text(response.name + moment().format(' (L)') + " " + response.weather[0].icon);
+            city.text(response.name + moment().format(' (L)'));
             temp.text(Math.round((response.main.temp - 273.15) * 1.80 + 32));
             humidity.text(response.main.humidity);
             wind.text(response.wind.speed);
-            // uv.text(response.)
 
             var lat = response.coord.lat;
             var lon = response.coord.lon;
+
+            queryURL3 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
+            $.ajax({
+                url: queryURL3,
+                method: "GET",
+
+            }).then(function (response) {
+
+                var uv = $("#uv");
+                uvValue = response.value;
+                console.log(uvValue)
+                if (uvValue < 5) {
+                    uv.text(uvValue);
+                    uv.removeClass("uvHigh");
+                    uv.removeClass("uvMed");
+                    uv.addClass("uvCold");
+                } else if ((uvValue >= 5) && (uvValue < 8)) {
+                    uv.text(uvValue);
+                    uv.removeClass("uvCold");
+                    uv.removeClass("uvHigh");
+                    uv.addClass("uvMed");
+                }
+                else if (uvValue >= 8) {
+                    uv.text(uvValue);
+                    uv.removeClass("uvCold");
+                    uv.removeClass("uvMed");
+                    uv.addClass("uvHigh");
+                }
+            })
 
             var queryURL2 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude={part}&appid=" + APIKey;
 
@@ -275,13 +343,8 @@ $(document).ready(function () {
                 } else {
                     day5Img.attr("src", "images/sun.png")
                 }
-
             })
-
         })
-
-
-        console.log(searchText)
     })
 
 });

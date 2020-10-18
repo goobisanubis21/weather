@@ -66,4 +66,25 @@
     width: 35px;
 }
 
+.uvCold {
+    background-color: rgb(5, 206, 5);
+    color: rgb(6, 64, 102);
+    padding: 3px;
+    font-weight: 900;
+}
+
+.uvMed {
+    background-color: orange;
+    color: black;
+    padding: 3px;
+    font-weight: 900;
+}
+
+.uvHigh {
+    background-color: red;
+    color: white;
+    padding: 3px;
+    font-weight: 900;
+}
+
 
