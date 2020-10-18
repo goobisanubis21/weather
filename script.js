@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     // funtion to display the current weather
     function display() {
-
+        // setting variables for elements being used in the display function and within its nested functions
         var searchText = $("#search-sidebar").val();
         var city = $("#city")
         var temp = $("#temp");
@@ -61,7 +61,7 @@ $(document).ready(function () {
             humidity.text(response.main.humidity);
             wind.text(response.wind.speed);
 
-            // function to add the search history
+            // function to add the search history and add local storage
             function addLi() {
                 var listEl = $("<li>");
                 listEl.addClass("list-group-item");
@@ -70,10 +70,10 @@ $(document).ready(function () {
                 $("#city-list").prepend(listEl);
                 localStorage.setItem("list", JSON.stringify(listEl));
             } addLi();
-
+            // setting variables for coords for api to get 5 day forcast
             var lat = response.coord.lat;
             var lon = response.coord.lon;
-
+            // url for 5 day forcast
             var queryURL2 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude={part}&appid=" + APIKey;
 
             $.ajax({
@@ -83,13 +83,14 @@ $(document).ready(function () {
             }).then(function (response) {
 
                 console.log("5-day response: ", response);
-
+                // setting variables for the 5 day forcast images
                 var day1Img = $("#day1Img");
                 var day2Img = $("#day2Img");
                 var day3Img = $("#day3Img");
                 var day4Img = $("#day4Img");
                 var day5Img = $("#day5Img");
-
+                // setting the text and attributes for the 5 day elements
+                // day 1 search value data
                 $("#day1Date").text(moment().add(1, 'days').format("L"));
                 $("#day1Temp").text(Math.round((response.daily[0].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day1Humidity").text(response.daily[0].humidity + "%");
@@ -104,7 +105,7 @@ $(document).ready(function () {
                 } else {
                     day1Img.attr("src", "images/sun.png")
                 }
-
+                // day 2 search value data
                 $("#day2Date").text(moment().add(2, 'days').format("L"));
                 $("#day2Temp").text(Math.round((response.daily[1].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day2Humidity").text(response.daily[1].humidity + "%");
@@ -119,7 +120,7 @@ $(document).ready(function () {
                 } else {
                     day2Img.attr("src", "images/sun.png")
                 }
-
+                // day 3 search value data
                 $("#day3Date").text(moment().add(3, 'days').format("L"));
                 $("#day3Temp").text(Math.round((response.daily[2].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day3Humidity").text(response.daily[2].humidity + "%");
@@ -134,7 +135,7 @@ $(document).ready(function () {
                 } else {
                     day3Img.attr("src", "images/sun.png")
                 }
-
+                // day 4 search value data
                 $("#day4Date").text(moment().add(4, 'days').format("L"));
                 $("#day4Temp").text(Math.round((response.daily[3].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day4Humidity").text(response.daily[3].humidity + "%");
@@ -149,7 +150,7 @@ $(document).ready(function () {
                 } else {
                     day4Img.attr("src", "images/sun.png")
                 }
-
+                // day 5 search value data
                 $("#day5Date").text(moment().add(5, 'days').format("L"));
                 $("#day5Temp").text(Math.round((response.daily[4].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day5Humidity").text(response.daily[4].humidity + "%");
@@ -164,17 +165,16 @@ $(document).ready(function () {
                 } else {
                     day5Img.attr("src", "images/sun.png")
                 }
-
+                // url to get the data for the uv index
                 queryURL3 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
                 $.ajax({
                     url: queryURL3,
                     method: "GET",
 
                 }).then(function (response) {
-
+                    // setting the elements and classes for the uv index to get the correct data and styling
                     var uv = $("#uv");
                     uvValue = response.value;
-                    console.log(uvValue)
                     if (uvValue < 5) {
                         uv.text(uvValue);
                         uv.removeClass("uvHigh");
@@ -197,16 +197,16 @@ $(document).ready(function () {
             })
         })
     }
-
+    // on click call to run display function when search button is clicked
     searchButton.on("click", display);
-
+    //on click funtion for when a list item in the search history is clicked
     $("#city-list").on("click", "li", function () {
         var searchText = this.id;
         var city = $("#city")
         var temp = $("#temp");
         var humidity = $("#humidity");
         var wind = $("#wind");
-
+        // calling the url for the list items to display the correct data when clicked upon for the current day
         var APIKey = "e96804d8841b5f95164ad5a431ddd022";
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchText + "&appid=" + APIKey;
 
@@ -230,7 +230,7 @@ $(document).ready(function () {
 
             var lat = response.coord.lat;
             var lon = response.coord.lon;
-
+            // calling the url for the list items data for the uv index
             queryURL3 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
             $.ajax({
                 url: queryURL3,
@@ -240,7 +240,6 @@ $(document).ready(function () {
 
                 var uv = $("#uv");
                 uvValue = response.value;
-                console.log(uvValue)
                 if (uvValue < 5) {
                     uv.text(uvValue);
                     uv.removeClass("uvHigh");
@@ -259,7 +258,7 @@ $(document).ready(function () {
                     uv.addClass("uvHigh");
                 }
             })
-
+            // calling the url for the list items 5 day forecast response
             var queryURL2 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude={part}&appid=" + APIKey;
 
             $.ajax({
@@ -267,7 +266,7 @@ $(document).ready(function () {
                 method: "GET"
 
             }).then(function (response) {
-
+                // day 1 list items
                 console.log("5-day response: ", response);
                 $("#day1Date").text(moment().add(1, 'days').format("L"));
                 $("#day1Temp").text(Math.round((response.daily[0].temp.day - 273.15) * 1.80 + 32) + " F");
@@ -283,7 +282,7 @@ $(document).ready(function () {
                 } else {
                     day1Img.attr("src", "images/sun.png")
                 }
-
+                // day 2 list items
                 $("#day2Date").text(moment().add(2, 'days').format("L"));
                 $("#day2Temp").text(Math.round((response.daily[1].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day2Humidity").text(response.daily[1].humidity + "%");
@@ -298,7 +297,7 @@ $(document).ready(function () {
                 } else {
                     day2Img.attr("src", "images/sun.png")
                 }
-
+                // day 3 list items
                 $("#day3Date").text(moment().add(3, 'days').format("L"));
                 $("#day3Temp").text(Math.round((response.daily[2].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day3Humidity").text(response.daily[2].humidity + "%");
@@ -313,7 +312,7 @@ $(document).ready(function () {
                 } else {
                     day3Img.attr("src", "images/sun.png")
                 }
-
+                // day 4 list items
                 $("#day4Date").text(moment().add(4, 'days').format("L"));
                 $("#day4Temp").text(Math.round((response.daily[3].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day4Humidity").text(response.daily[3].humidity + "%");
@@ -328,7 +327,7 @@ $(document).ready(function () {
                 } else {
                     day4Img.attr("src", "images/sun.png")
                 }
-
+                // day 5 list items
                 $("#day5Date").text(moment().add(5, 'days').format("L"));
                 $("#day5Temp").text(Math.round((response.daily[4].temp.day - 273.15) * 1.80 + 32) + " F");
                 $("#day5Humidity").text(response.daily[4].humidity + "%");
