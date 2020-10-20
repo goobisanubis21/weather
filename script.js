@@ -3,15 +3,6 @@ $(document).ready(function () {
     // getting the search button
     var searchButton = $("#search-sidebutton");
 
-    // showStorage()
-    // function showStorage() {
-    //     listItem = JSON.parse(localStorage.getItem("list"));
-    //     var listEl = $("<li>");
-    //     listEl.addClass("list-group-item");
-    //     listEl.text(listItem);
-    //     $("#city-list").prepend(listEl);
-    // }
-
     // funtion to display the current weather
     function display() {
         // setting variables for elements being used in the display function and within its nested functions
