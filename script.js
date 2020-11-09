@@ -1,5 +1,6 @@
 // when document is loaded, run the function
 $(document).ready(function () {
+
     // getting the search button
     var searchButton = $("#search-sidebutton");
 
@@ -59,7 +60,16 @@ $(document).ready(function () {
                 listEl.text(response.name);
                 listEl.attr("id", response.name);
                 $("#city-list").prepend(listEl);
-                localStorage.setItem("list", JSON.stringify(listEl));
+
+                var store = JSON.parse(localStorage.getItem("store"));
+                if (store == null) {
+                    store = [];
+                }
+
+                var cityStorage = listEl.text();
+                store.push(cityStorage);
+                localStorage.setItem("store", JSON.stringify(store));
+
             } addLi();
             // setting variables for coords for api to get 5 day forcast
             var lat = response.coord.lat;
@@ -337,4 +347,15 @@ $(document).ready(function () {
         })
     })
 
+    var store = JSON.parse(localStorage.getItem("store"));
+    if (store == null) {
+        store = [];
+    }
+    for (var i = 0; i < store.length; i++) {
+        var listEl = $("<li>");
+        listEl.addClass("list-group-item");
+        listEl.text(store[i]);
+        listEl.attr("id", store[i]);
+        $("#city-list").prepend(listEl);
+    }
 });
