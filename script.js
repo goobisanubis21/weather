@@ -347,6 +347,7 @@ $(document).ready(function () {
         })
     })
 
+    // getting items from local storage and set them to the list items when page first loads
     var store = JSON.parse(localStorage.getItem("store"));
     if (store == null) {
         store = [];
