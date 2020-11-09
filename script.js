@@ -157,7 +157,7 @@ $(document).ready(function () {
                     day5Img.attr("src", "images/sun.png")
                 }
                 // url to get the data for the uv index
-                queryURL3 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
+                queryURL3 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
                 $.ajax({
                     url: queryURL3,
                     method: "GET",
@@ -222,7 +222,7 @@ $(document).ready(function () {
             var lat = response.coord.lat;
             var lon = response.coord.lon;
             // calling the url for the list items data for the uv index
-            queryURL3 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
+            queryURL3 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey
             $.ajax({
                 url: queryURL3,
                 method: "GET",
